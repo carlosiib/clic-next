@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "./components/Header/page";
 
 
 export const metadata: Metadata = {
@@ -14,7 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body >{children}</body>
+      <body className="min-h-screen grid grid-rows-[auto_1fr_auto]">
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
