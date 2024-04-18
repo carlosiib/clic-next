@@ -28,10 +28,10 @@ export const shopify_accounts = pgTable(
     id: serial("id").primaryKey(),
     shopifyId: integer("shopify_id").notNull(),
     firstName: varchar("first_name", {
-      length: 30,
-    }).notNull(),
-    lastName: varchar("last_name", { length: 30 }),
-    email: varchar("email", { length: 40 }).notNull(),
+      length: 140,
+    }),
+    lastName: varchar("last_name", { length: 140 }),
+    email: varchar("email", { length: 80 }).notNull(),
     IsPWActivated: boolean("is_pw_activated")
       .default(false)
       .notNull(),
