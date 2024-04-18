@@ -1,7 +1,8 @@
+// Prevents this route's response from being cached
+export const dynamic = "force-dynamic";
+
 import "dotenv/config";
-import { asc, sql } from "drizzle-orm";
-import db from "./drizzle";
-import { shopify_accounts, users } from "./schema";
+import { NextResponse } from "next/server";
 // @ts-ignore
 import parseLinks from "parse-links";
 import axios from "axios";
@@ -11,7 +12,8 @@ import {
   UserProps,
 } from "u@/lib/typesndefined";
 
-// npx tsx src/app/db/seed.ts
+// ONLY FOR DEVELOPMENT
+// api/shopify/seed
 const CUSTOMERS_URL = process.env.CUSTOMERS_URL!;
 
 let arr: Array<UserProps> = [];
@@ -65,45 +67,37 @@ function fetchNextJson(url: string): any {
     });
 }
 
-async function main() {
+export async function POST() {
   try {
-    console.log("Init DB seeding");
-    // const data = await db
-    //   .select()
-    //   .from(users)
-    //   .orderBy(asc(users.createdAt));
-    // console.log(data);
+    const customers = await fetchNextJson(CUSTOMERS_URL);
 
-    const users = await fetchNextJson(CUSTOMERS_URL);
-    console.log("u", users);
+    if (customers.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          data: null,
+          error: "Customer array is empty",
+        },
+        { status: 200 }
+      );
+    }
 
-    // await db.delete(shopify_accounts);
-
-    // await db.insert(users).values([
-    //   {
-    //     email: "foo+1@gmail.com",
-    //     password: "foo",
-    //     username: "foo",
-    //   },
-    // ]);
-
-    // await db.insert(shopify_accounts).values([
-    //   {
-    //     email: "foo@gmail.com",
-    //     firstName: "foo",
-    //     shopifyId: 111,
-    //   },
-    // ]);
-
-    // slq template syntax -> prevent sql injection
-    // const user1 = "foo";
-    // const u = await db.execute(
-    //   sql`select ${users.username} from ${users} where ${users.username} = 'foo'`
-    // );
-    // console.log(u.rows[0].text);
-    console.log("Finish DB seeding");
+    return NextResponse.json(
+      {
+        success: true,
+        data: customers,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    console.log("FAILED: DB seeding", error);
+    console.log("FAILED SHOPIFY SEED", error);
+    return NextResponse.json(
+      {
+        success: false,
+        data: null,
+        error: error,
+      },
+      { status: 400 }
+    );
   }
 }
-main();
