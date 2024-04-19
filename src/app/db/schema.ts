@@ -6,6 +6,7 @@ import {
   timestamp,
   integer,
   varchar,
+  bigint,
 } from "drizzle-orm/pg-core";
 
 // push changes to neon -> npx drizzle-kit push:pg
@@ -26,7 +27,9 @@ export const shopify_accounts = pgTable(
   "shopify_accounts",
   {
     id: serial("id").primaryKey(),
-    shopifyId: integer("shopify_id").notNull().unique(),
+    shopifyId: bigint("shopify_id", { mode: "number" })
+      .notNull()
+      .unique(),
     firstName: varchar("first_name", {
       length: 140,
     }),

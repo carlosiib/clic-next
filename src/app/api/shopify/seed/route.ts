@@ -11,6 +11,8 @@ import {
   ShopifyUser,
   UserProps,
 } from "u@/lib/typesndefined";
+import db from "u@/app/db/drizzlendefined";
+import { shopify_accounts } from "u@/app/db/schemandefined";
 
 // ONLY FOR DEVELOPMENT
 // api/shopify/seed
@@ -67,6 +69,21 @@ async function getAllCustomers(
   }
 }
 
+async function seedDB(customer: any) {
+  try {
+    await db.insert(shopify_accounts).values({
+      shopifyId: customer.id,
+      firstName: customer.first_name ?? "",
+      lastName: customer.last_name ?? "",
+      IsPWActivated:
+        customer.state === "enabled" ? true : false,
+      email: customer.email,
+    });
+  } catch (error) {
+    console.log("Seed customer failed", error);
+  }
+}
+
 export async function POST() {
   try {
     const customers = await getAllCustomers(CUSTOMERS_URL);
@@ -83,6 +100,14 @@ export async function POST() {
         { status: 200 }
       );
     }
+
+    // const seedCustomers = customers?.map(
+    //   async (customer) => await seedDB(customer)
+    // );
+
+    // if (seedCustomers) {
+    //   await Promise.all(seedCustomers);
+    // }
 
     return NextResponse.json(
       {

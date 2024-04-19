@@ -29,14 +29,14 @@ export async function POST(request: Request) {
 
     console.log(data);
 
-    // await db.insert(shopify_accounts).values({
-    //   shopifyId: data.id,
-    //   firstName: data.first_name ?? "",
-    //   lastName: data.last_name ?? "",
-    //   IsPWActivated:
-    //     data.state === "enabled" ? true : false,
-    //   email: data.email,
-    // });
+    await db.insert(shopify_accounts).values({
+      shopifyId: data.id,
+      firstName: data.first_name ?? "",
+      lastName: data.last_name ?? "",
+      IsPWActivated:
+        data.state === "enabled" ? true : false,
+      email: data.email,
+    });
 
     return NextResponse.json(
       {
