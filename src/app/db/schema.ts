@@ -26,7 +26,7 @@ export const shopify_accounts = pgTable(
   "shopify_accounts",
   {
     id: serial("id").primaryKey(),
-    shopifyId: integer("shopify_id").notNull(),
+    shopifyId: integer("shopify_id").notNull().unique(),
     firstName: varchar("first_name", {
       length: 140,
     }),

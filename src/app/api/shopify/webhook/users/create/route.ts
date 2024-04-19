@@ -67,6 +67,16 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    if (error instanceof Error) {
+      return NextResponse.json(
+        {
+          success: false,
+          data: null,
+          error: error.message,
+        },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       {
         success: false,
