@@ -27,25 +27,16 @@ export async function POST(request: Request) {
 
     const data = payload.parse(req);
 
-    if (!data.id) {
-      return NextResponse.json(
-        {
-          success: false,
-          data: null,
-          error: "Webhook user create payload is error",
-        },
-        { status: 400 }
-      );
-    }
+    console.log(data);
 
-    await db.insert(shopify_accounts).values({
-      shopifyId: data.id,
-      firstName: data.first_name ?? "",
-      lastName: data.last_name ?? "",
-      IsPWActivated:
-        data.state === "enabled" ? true : false,
-      email: data.email,
-    });
+    // await db.insert(shopify_accounts).values({
+    //   shopifyId: data.id,
+    //   firstName: data.first_name ?? "",
+    //   lastName: data.last_name ?? "",
+    //   IsPWActivated:
+    //     data.state === "enabled" ? true : false,
+    //   email: data.email,
+    // });
 
     return NextResponse.json(
       {
