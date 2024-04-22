@@ -1,10 +1,13 @@
-import { Button } from "../components/ui/button";
+import React from "react";
+import Search from "./components/Search/page";
 
 export default function Home() {
   return (
-    <main>
-      <p className="bg-slate-950 my-2 text-cyan-400">Hello</p>
-      <Button>Click me</Button>
-    </main>
+    <>
+      <Search />
+      <main>
+        table
+      </main>
+    </>
   );
 }

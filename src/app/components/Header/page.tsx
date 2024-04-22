@@ -14,8 +14,9 @@ export default function Header() {
   ];
 
   //https://placehold.jp/36x36.png 
+  // TODO:  mobile menu should me fill width
   return (
-    <div className="relative container mx-auto">
+    <div className="relative mx-auto container">
       <nav>
         <header>
           <ul className="flex justify-between place-items-center py-2 xl:gap-4">

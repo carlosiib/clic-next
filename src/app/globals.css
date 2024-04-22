@@ -74,3 +74,9 @@
       @apply bg-background text-foreground;
     }
   }
+
+@media(min-width:768px){
+ .search__form:has(.text-destructive) button{
+  margin-bottom:calc(1ch + 1.3rem)
+ }
+}
