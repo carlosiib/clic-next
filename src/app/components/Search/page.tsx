@@ -1,7 +1,7 @@
 'use client'
 import { Button } from "u@/components/ui/buttonndefined";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { Suspense, useCallback } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { useForm } from "react-hook-form"
@@ -13,7 +13,7 @@ const formSchema = z.object({
   email: z.string().min(1, { message: "Field is required." }).email({ message: "Invalid email address" })
 })
 
-export default function Search() {
+function SearchBar() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -27,25 +27,7 @@ export default function Search() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-
-    try {
-      // const form = Object.fromEntries(new FormData(e.currentTarget))
-
-      // const data = formSchema.parse(form)
-      // console.log(data)
-
-      router.push(pathname + '?' + createQueryString('email', values.email))
-
-
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return console.log("zod error", error.issues[0].message)
-      }
-      if (error instanceof Error) {
-        return console.log("Error", error.message)
-      }
-      console.log("Error general", error)
-    }
+    router.push(pathname + '?' + createQueryString('email', values.email))
   }
 
   const createQueryString = useCallback(
@@ -82,5 +64,13 @@ export default function Search() {
       </form>
 
     </Form>
+  )
+}
+
+export default function Search() {
+  return (
+    <Suspense fallback="Loading">
+      <SearchBar />
+    </Suspense>
   )
 }
