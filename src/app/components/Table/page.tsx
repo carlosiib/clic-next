@@ -1,7 +1,7 @@
 import { Badge } from "u@/components/ui/badgendefined";
 import { Table as TableContainer, TableBody, TableCell, TableHead, TableHeader, TableRow } from "u@/components/ui/tablendefined";
 
-interface TableProps {
+interface TableCompProps {
   customers: {
     shopifyId: number,
     firstName: string | null;
@@ -13,7 +13,7 @@ interface TableProps {
   searchFor: string | undefined,
 }
 
-export default async function Table({ customers, title, searchFor }: TableProps) {
+export default async function Table({ customers, title, searchFor }: TableCompProps) {
 
   return (
     <>
