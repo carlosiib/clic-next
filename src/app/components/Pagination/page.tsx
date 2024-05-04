@@ -12,12 +12,12 @@ export default async function Pagination({ page, total, size }: any) {
   const hasNextPage = (page + 1) > totalPages
 
   return (
-    <div className="mt-4 text-end">
+    <div className="mt-4 flex items-center justify-end gap-1 sm:gap-2">
 
-      <span className="text-sm font-medium mr-4 ">Page {page} of {totalPages}</span>
+      <span className="text-sm font-medium sm:mr-2">Page {page} of {totalPages}</span>
       <Link
         href={`/?page=${page > 1 ? Number(page) - 1 : 1}`}
-        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground px-4 py-2 mr-2"
+        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground px-4 py-2"
         aria-label="Go to next page"
       >
         Previous
