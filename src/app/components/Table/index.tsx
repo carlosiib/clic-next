@@ -12,6 +12,8 @@ interface TableCompProps {
 // renamed Table/page.tsx to Table/index.tsc b/c build was failing, maybe b/c it was intefering with shadcn components table.tsx??
 export default async function Table({ customers, searchFor }: TableCompProps) {
 
+  //console.log(customers.find(c => c.shopifyId === 7650161361089))
+
   return (
     <>
       {customers?.length === 0 && searchFor &&
@@ -33,12 +35,12 @@ export default async function Table({ customers, searchFor }: TableCompProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customers.map((customer) => <>
+              {customers.map((customer) =>
                 <TableRow key={customer.shopifyId}>
                   <TableCell className="font-medium px-0">{(customer?.firstName ?? '') + (customer?.lastName ?? '')}</TableCell>
                   <TableCell>{customer.email}</TableCell>
                   <TableCell>
-                    {customer.isPwActivated ?
+                    {customer?.IsPWActivated ?
                       <Badge className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm shadow-none dark:bg-green-900 dark:text-green-300 hover:bg-green-100 hover:text-green-800 ">
                         Enabled
                       </Badge>
@@ -52,7 +54,7 @@ export default async function Table({ customers, searchFor }: TableCompProps) {
                     <button>...</button>
                   </TableCell>
                 </TableRow>
-              </>)}
+              )}
             </TableBody>
           </TableContainer >
         </>

@@ -19,7 +19,7 @@ export const shopifyAccounts = pgTable("shopify_accounts", {
   }).notNull(),
   lastName: varchar("last_name", { length: 30 }),
   email: varchar("email", { length: 40 }).notNull(),
-  isPwActivated: boolean("is_pw_activated")
+  IsPWActivated: boolean("is_pw_activated")
     .default(false)
     .notNull(),
   pwActivatedAt: timestamp("pw_activated_at", {

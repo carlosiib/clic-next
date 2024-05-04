@@ -3,9 +3,10 @@ import Search from "./components/Search/page";
 import Table from "./components/Table";
 import db from "./db/drizzle";
 import { shopify_accounts } from "./db/schema";
-import { desc, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { Shopify_Account } from "../../drizzle/schema";
+import Pagination from "./components/Pagination/page";
 
 export interface ShopifyAccount {
   email: string;
@@ -21,6 +22,17 @@ export interface ShopifyAccount {
 
 type S = ShopifyAccount & Shopify_Account
 
+async function countRecords() {
+  try {
+    const total = await db
+      .select({ count: count() })
+      .from(shopify_accounts)
+    return total
+  } catch (error) {
+    console.log("Filed to get records")
+  }
+}
+
 
 
 // TODO: handle reset search input value?
@@ -35,7 +47,9 @@ export default async function Home({ searchParams }: any) {
   };
 
   const searchEmail = getParam('email') as string
-  // console.log({ searchEmail })
+  // const page = getParam('page') ?? '1'
+  const page = searchParams['page'] ?? '1'
+  const PAGE_SIZE = 10;
 
   async function getCustomers(query: string | undefined): Promise<Shopify_Account[]> {
     //console.log(query)
@@ -52,7 +66,8 @@ export default async function Home({ searchParams }: any) {
         .select()
         .from(shopify_accounts)
         .orderBy(desc(shopify_accounts.createdAt))
-        .limit(10);
+        .limit(PAGE_SIZE)
+        .offset((page - 1) * PAGE_SIZE);
       return data as unknown as S[]
     } catch (error) {
       if (error instanceof Error) {
@@ -65,7 +80,7 @@ export default async function Home({ searchParams }: any) {
   }
 
   const customers = await getCustomers(searchEmail)
-
+  const [total] = await countRecords() ?? [{ count: 0 }]
 
   // TODO: INSTEAD of where = customer, includes? so users dont need to add full email
   return (
@@ -74,6 +89,8 @@ export default async function Home({ searchParams }: any) {
       <main>
         {searchEmail && <Link href="/">Clean</Link>}
         <Table customers={customers} searchFor={searchEmail as string} />
+        <Pagination page={Number(page)} total={total.count} size={PAGE_SIZE as number} />
+
       </main>
     </>
   );
